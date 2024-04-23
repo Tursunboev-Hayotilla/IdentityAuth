@@ -52,10 +52,10 @@ namespace IdentityAuthLesson
 
 
             builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(opt =>
             {
-                opt.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
                 opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
                 opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -68,23 +68,23 @@ namespace IdentityAuthLesson
                 });
 
                 opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type=ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
             });
 
-
             var app = builder.Build();
+            
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -92,8 +92,8 @@ namespace IdentityAuthLesson
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
-
+            
+    ;
 
             app.UseHttpsRedirection();
 
@@ -108,3 +108,4 @@ namespace IdentityAuthLesson
         }
     }
 }
+
