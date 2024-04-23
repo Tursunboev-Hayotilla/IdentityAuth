@@ -70,7 +70,7 @@ namespace IdentityAuthLesson.Controllers
 
             if (user is null)
             {
-                return Unauthorized("User not Found with this email");
+                return Unauthorized("User not Found");
             }
 
             var test = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
@@ -79,8 +79,6 @@ namespace IdentityAuthLesson.Controllers
             {
                 return Unauthorized("Password invalid");
             }
-
-            // token kelishi kere
 
             var token = await _authService.GenerateToken(user);
 
@@ -96,22 +94,6 @@ namespace IdentityAuthLesson.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        [Authorize(Roles = "Student")]
-        public async Task<ActionResult<string>> GetAllUsers1()
-        {
-            var result = await _userManager.Users.ToListAsync();
-
-            return Ok("Student keldi");
-        }
-
-        [HttpGet]
-        //[Authorize(Roles = "Admin, Student")]
-        public async Task<ActionResult<string>> GetAllUsers2()
-        {
-            var result = await _userManager.Users.ToListAsync();
-
-            return Ok("Admin, Student ishladi");
-        }
+        
     }
 }
