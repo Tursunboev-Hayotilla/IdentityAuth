@@ -1,5 +1,6 @@
 ﻿using IdentityAuthLesson.DTOs;
 using IdentityAuthLesson.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,7 @@ namespace IdentityAuthLesson.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ResponseDTO>> CreateRole(RoleDTO role)
         {
 
@@ -48,6 +50,7 @@ namespace IdentityAuthLesson.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<IdentityRole>>> GetAllRoles()
         {
             var roles = await _roleManager.Roles.ToListAsync();
@@ -55,7 +58,7 @@ namespace IdentityAuthLesson.Controllers
             return Ok(roles);
         }
         [HttpGet]
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IdentityRole>> GetRoleById(Guid id)
         {
             var res = await _roleManager.FindByIdAsync(id.ToString());
@@ -66,7 +69,7 @@ namespace IdentityAuthLesson.Controllers
             return BadRequest("Role not found");
         }
         [HttpDelete]
-
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> DeleteRole(Guid id)
         {
             var role = await _roleManager.FindByIdAsync(id.ToString());
@@ -79,6 +82,7 @@ namespace IdentityAuthLesson.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> UpdateRole(Guid id, RoleDTO role)
         {
             var storedRole = await _roleManager.FindByIdAsync(id.ToString());
